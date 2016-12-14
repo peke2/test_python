@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 def greeting():
-    print "ハロー"
+    print("ハロー")
 
 def add(a, b):
     return a+b
