@@ -11,21 +11,23 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def normalizeZ(z, near, far):
+def calcDepthZ(z, near, far):
 	return (z - near)/(far - near)
 
-def normalizeZ2(z, near, far):
+def calcDepthZ2(z, near, far):
 	return (far/z)*(z - near)/(far - near)
 
 far = 1000.0
 near = 10
 
 z = np.arange(near, far, 10)
-y = normalizeZ(z, near, far)
-y2 = normalizeZ2(z, near, far)
+y = calcDepthZ(z, near, far)
+y2 = calcDepthZ2(z, near, far)
 
 plt.xlabel("Z")
 plt.ylabel("Depth")
-plt.plot(z, y)
-plt.plot(z, y2, linestyle="--")	#「-」「--」「:」「-.」
+plt.plot(z, y, label="(z - near)/(far - near)")
+plt.plot(z, y2, linestyle="--", label="(far/z)*(z - near)/(far - near)")	#「-」「--」「:」「-.」
+plt.legend();
+
 plt.show()
