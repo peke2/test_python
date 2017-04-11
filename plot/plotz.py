@@ -17,17 +17,26 @@ def calcDepthZ(z, near, far):
 def calcDepthZ2(z, near, far):
 	return (far/z)*(z - near)/(far - near)
 
-far = 1000.0
-near = 10
+def calcProjectionDepthZ(z, near, far):
+	return (-z*(near + far) + (-2*near*far))/(far - near) / (-z)	#投影マトリクスの計算によるもの
 
-z = np.arange(near, far, 10)
-y = calcDepthZ(z, near, far)
-y2 = calcDepthZ2(z, near, far)
+#far = 1000.0
+#near = 10
+far = 100.0
+near = 0.3
+
+#z = np.arange(near, far, 10)
+#y = calcDepthZ(z, near, far)
+#y2 = calcDepthZ2(z, near, far)
+
+z = np.arange(-near, -far, -10)
+y3 = calcProjectionDepthZ(z, near, far)
 
 plt.xlabel("Z")
 plt.ylabel("Depth")
-plt.plot(z, y, label="(z - near)/(far - near)")
-plt.plot(z, y2, linestyle="--", label="(far/z)*(z - near)/(far - near)")	#「-」「--」「:」「-.」
+#plt.plot(z, y, label="(z - near)/(far - near)")
+#plt.plot(z, y2, linestyle="--", label="(far/z)*(z - near)/(far - near)")	#「-」「--」「:」「-.」
+plt.plot(z, y3, linestyle="--", label="Projection")	#「-」「--」「:」「-.」
 plt.legend();
 
 plt.show()
