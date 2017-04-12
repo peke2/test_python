@@ -18,19 +18,28 @@ def calcDepthZ2(z, near, far):
 	return (far/z)*(z - near)/(far - near)
 
 def calcProjectionDepthZ(z, near, far):
-	return (-z*(near + far) + (-2*near*far))/(far - near) / (-z)	#投影マトリクスの計算によるもの
+	return (z*(near + far) + (-2*near*far))/(far - near) / (-z)	#OpenGLでも投影マトリクスの計算によるもの(near～far → 1～-1)
+
+def calcProjectionDepthZ2(z, near, far):
+	return (z*far-near*far)/(far-near) / z	#左手系だけど、near～far が 0.0～1.0 に変換される
+
+
 
 #far = 1000.0
 #near = 10
+#step = 10
 far = 100.0
 near = 0.3
+step = 1
 
-#z = np.arange(near, far, 10)
+#z = np.arange(near, far, step)
 #y = calcDepthZ(z, near, far)
 #y2 = calcDepthZ2(z, near, far)
 
-z = np.arange(-near, -far, -10)
-y3 = calcProjectionDepthZ(z, near, far)
+z = np.arange(-near, -far, -step)
+y3 = calcProjectionDepthZ(z, -near, -far)
+#z = np.arange(near, far, step)
+#y3 = calcProjectionDepthZ2(z, near, far)
 
 plt.xlabel("Z")
 plt.ylabel("Depth")
