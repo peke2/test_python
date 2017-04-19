@@ -17,14 +17,14 @@ def calcDepthZ(z, near, far):
 def calcDepthZ2(z, near, far):
 	return (far/z)*(z - near)/(far - near)
 
-def calcProjectionDepthZ(z, near, far):
-	return (z*(near + far) + (-2*near*far))/(far - near) / (-z)	#OpenGLでも投影マトリクスの計算によるもの(near～far → 1～-1)
+def calcProjectionDepthZ(z, n, f):
+	return (z*-(n+f)+(-2*n*f))/(f-n) /(-z)	#OpenGLでの投影マトリクスの計算によるもの(near～far → -1～1)
 
 def calcProjectionDepthZ2(z, near, far):
 	return (z*far-near*far)/(far-near) / z	#左手系だけど、near～far が 0.0～1.0 に変換される
 
 def calcZFromDepth(zn, n, f):
-	return -2*f*n/(f+n+zn*(f-n))
+	return 2*f*n/(zn*(f-n)-(f+n))
 
 
 
@@ -39,12 +39,15 @@ step = 1
 #y = calcDepthZ(z, near, far)
 #y2 = calcDepthZ2(z, near, far)
 
-#z = np.arange(-near, -far, -step)
-#y3 = calcProjectionDepthZ(z, -near, -far)
+#z = np.arange(-near, -far, -step)			#右手系なので、Z座標は奥がマイナス
+#y3 = calcProjectionDepthZ(z, near, far)		#クリップ面は「カメラからの距離」なので、常にプラスで指定
 #z = np.arange(near, far, step)
 #y3 = calcProjectionDepthZ2(z, near, far)
 
-z = np.arange(-1, 1, 0.02)
+#	arange(start, stop, step) [start,stop) stopは含まれない
+#	stop近くの変化が大きいので1つ手前の0.98だとfarの-100まで届かないのでグラフがおかしく見える
+#	計算結果は正しいのだが、見栄えを良くするためstopの「1」も確実に含まれるようにしておく
+z = np.arange(-1, 1.02, 0.02)
 y4 = calcZFromDepth(z, near, far)
 
 
